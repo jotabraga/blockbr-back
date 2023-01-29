@@ -1,0 +1,32 @@
+{
+  "name": "blockbr-back",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=production NODE_TLS_REJECT_UNAUTHORIZED=0 node dist/server.js",
+    "dev": "NODE_ENV=development npx nodemon --watch \"src/**\" --ext \"ts,json\" --exec \"npm run eslint:fix && ts-node -r tsconfig-paths/register --files src/server.ts\"",
+    "build": "NODE_ENV=production rm -rf ./dist && npm run eslint:fix && npx ttsc -P ./tsconfig.json --outDir dist && babel dist -d dist && npx typeorm migration:run",
+    "eslint:fix": "npx eslint --fix src"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jotabraga/blockbr-back.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jotabraga/blockbr-back/issues"
+  },
+  "homepage": "https://github.com/jotabraga/blockbr-back#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "typeorm": "^0.3.11"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18"
+  }
+}
