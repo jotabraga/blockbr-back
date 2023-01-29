@@ -5,6 +5,9 @@
   "repository": "git@github.com:jotabraga/blockbr-back.git",
   "author": "jotabraga <jpmbraga.feg@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --exec ts-node ./src/index.ts"
+  },
   "devDependencies": {
     "@types/express": "^4.17.16",
     "@types/node": "^18.11.18",
