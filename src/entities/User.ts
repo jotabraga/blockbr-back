@@ -1,4 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, BaseEntity } from "typeorm";
 
 @Entity('users')
 export class User {
@@ -18,5 +18,5 @@ export class User {
     birthDay: string
 
     @Column({ type: 'text' })
-    salary: string
+    salary: string;
 }
