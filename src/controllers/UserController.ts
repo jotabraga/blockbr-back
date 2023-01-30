@@ -1,28 +1,14 @@
 import { Request, Response } from "express";
 import { User } from "../entities/User";
 import { userRepository } from "../repositories/userRepository";
-
-export interface ICreateUser {
-    name: string;
-    email: string;
-    cpf: string;
-    birthDay: string;
-    salary: string;
-}
+import { UserService } from '../services/UserService'
 
 export class UserController {
-    async createUser(req: Request, res: Response) {
-        const { name, email, cpf, birthDay, salary } = req.body;
+    constructor(private userService: UserService) { }
 
+    async createUser(req: Request, res: Response) {
         try {
-            const newUser = userRepository.create({
-                name,
-                email,
-                cpf,
-                birthDay,
-                salary,
-            });
-            await userRepository.save(newUser);
+            const newUser = this.userService.create(req.body);
             return res.status(201).json(newUser);
         } catch (error) {
             console.error(error);
@@ -34,8 +20,8 @@ export class UserController {
 
     async listUsers(req: Request, res: Response) {
         try {
-            const allUsers = await userRepository.find({ order: { id: "DESC" } });
-            return allUsers;
+            const allUsers = this.userService.list();
+            return res.status(20).json(allUsers);
         } catch (error) {
             console.error(error);
             return res
@@ -51,6 +37,7 @@ export class UserController {
             if (!userToDelete)
                 throw new Error('Error in delete user, this user do not exist in database');
             else await userRepository.remove(userToDelete);
+            return res.status(200).json({ message: 'User removed' });
         } catch (error) {
             console.error(error);
             return res.status(500).json({ message: 'There is an error in delete user' })
@@ -68,14 +55,16 @@ export class UserController {
     }
 
     async updateUser(req: Request, res: Response) {
-
+        const newDataUser = req.body;
+        const { id } = req.params;
         try {
-
+            const userToUpdate = await this.getUserById(Number(id));
+            if (!userToUpdate) throw new Error('Error in update user, this user do not exist in database');
+            const updatedUser = userRepository.save({ ...userToUpdate, ...newDataUser })
+            return res.status(200).json(updatedUser);
         } catch (error) {
             console.error(error);
-            return res.status(500).json({ message: 'There is an error in list all users' })
+            return res.status(500).json({ message: 'There is an error in update user' })
         }
-
-
     }
 }
